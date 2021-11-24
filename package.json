@@ -1,0 +1,20 @@
+{
+  "name": "multi-player-chess-game",
+  "version": "1.0.0",
+  "description": "this will host the description of my game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milcab/multi-player-chess-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milcab/multi-player-chess-game/issues"
+  },
+  "homepage": "https://github.com/milcab/multi-player-chess-game#readme"
+}
