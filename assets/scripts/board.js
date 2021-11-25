@@ -48,6 +48,10 @@ function createToken() {
     const token = document.createElement('div')
     token.classList.add('token')
 
+    token.addEventListener("click", () => {
+        window.navigator.vibrate(200);
+    })
+
     return token
 }
 
