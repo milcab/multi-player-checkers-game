@@ -22,23 +22,19 @@ rows.forEach((cols, rowIndex) => {
         const isEmptyRow = rowIndex === 3 || rowIndex === 4
 
         if (isEven && !isEmptyRow) {
+            let token = createToken();
+            let tokenColor;
 
             if (whiteTokens.length) {
                 whiteTokens.pop()
-                const token = createToken()
-
-                token.classList.add('white');
-
-                colEl.appendChild(token)
+                tokenColor = 'white';
             } else if (redTokens.length) {
                 redTokens.pop()
-                const token = createToken()
-
-                token.classList.add('red');
-
-                colEl.appendChild(token)
+                tokenColor = 'red';
             }
 
+            token.classList.add(tokenColor);
+            colEl.appendChild(token)
         }
 
         rowEl.appendChild(colEl)
