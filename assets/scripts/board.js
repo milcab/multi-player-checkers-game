@@ -44,11 +44,16 @@ rows.forEach((cols, rowIndex) => {
     boardEl.appendChild(rowEl)
 })
 
+const sounds = {
+    tokenClicked: new Audio('assets/sounds/ES_Ping Pong Paddle 1 - SFX Producer.mp3')
+}
+
 function createToken() {
     const token = document.createElement('div')
     token.classList.add('token')
 
     token.addEventListener("click", () => {
+        sounds.tokenClicked.play();
         window.navigator.vibrate(200);
     })
 
