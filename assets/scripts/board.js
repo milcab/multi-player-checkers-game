@@ -45,7 +45,7 @@ rows.forEach((cols, rowIndex) => {
 })
 
 const sounds = {
-    tokenClicked: new Audio('assets/sounds/ES_Ping Pong Paddle 1 - SFX Producer.mp3')
+    tokenClicked: document.getElementById('tokenClicked')
 }
 
 function createToken() {
@@ -53,7 +53,10 @@ function createToken() {
     token.classList.add('token')
 
     token.addEventListener("click", () => {
+        sounds.tokenClicked.pause();
+        sounds.tokenClicked.load();
         sounds.tokenClicked.play();
+        // :( not sure why it does not work :(
         window.navigator.vibrate(200);
     })
 
