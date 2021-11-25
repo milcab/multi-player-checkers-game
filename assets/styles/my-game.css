@@ -1,0 +1,55 @@
+body {
+  background-color: #282828;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.board {
+  background: #f7f7e1;
+  width: 410px;
+  margin: auto;
+  border: 5px solid #6a4f00;
+}
+
+.token {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px #000;
+  background-image: url("/assets/images/generic-token.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: auto;
+}
+
+.token.red {
+  background-color: red;
+}
+
+.token.black {
+  background-color: navajowhite;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+  border: 1px solid black;
+  padding: 0;
+  margin: 0;
+
+  width: 50px;
+  height: 50px;
+}
+.row:nth-child(odd) .column:nth-child(odd),
+.row:nth-child(even) .column:nth-child(even) {
+  background-color: rgb(97, 25, 25);
+}
