@@ -54,7 +54,12 @@ body {
   width: 50px;
   height: 50px;
 }
+
 .row:nth-child(odd) .column:nth-child(odd),
 .row:nth-child(even) .column:nth-child(even) {
   background-color: rgb(97, 25, 25);
+}
+
+.column.highlighted {
+  background: yellow !important;
 }
