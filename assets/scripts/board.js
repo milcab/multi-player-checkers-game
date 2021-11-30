@@ -77,11 +77,19 @@ function findNextMoves(tokenColor, rowIndex, colIndex) {
     }
 }
 
-function highlight(moves) {
-    moves.forEach((move) => {
+function highlight(nextMoves) {
+    nextMoves.forEach((move) => {
         if (move) {
             move.classList.add('highlighted')
         }
+    })
+}
+
+function moveToken(cuadros, token) {
+    cuadros.forEach((cuadro) => {
+        cuadro.addEventListener("click", () => {
+            cuadro.appendChild(token)
+        })
     })
 }
 
@@ -99,6 +107,8 @@ function createToken(tokenColor, rowIndex, colIndex) {
         const nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
         removeHighlightedBoxes()
         highlight(nextMoves)
+        moveToken(nextMoves, token)
+
     })
 
     return token
