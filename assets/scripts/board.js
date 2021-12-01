@@ -49,7 +49,11 @@ rows.forEach((cols, rowIndex) => {
 })
 
 function removeHighlightedBoxes() {
-    document.querySelectorAll('.highlighted').forEach(element => {
+    // what is this doing?
+    document.querySelectorAll('.highlighted')
+    // what is this doing?
+    .forEach(element => {
+        // what is this doing?
         element.classList.remove('highlighted')
     })
 }
@@ -91,6 +95,7 @@ function moveToken(cuadros, token) {
         cuadro.addEventListener("click", () => {
             if (cuadro.innerHTML === "") {
                 cuadro.appendChild(token)
+                removeHighlightedBoxes()
             }
         })
     })
