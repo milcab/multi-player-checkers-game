@@ -66,6 +66,7 @@ function findNextMoves(tokenColor, rowIndex, colIndex) {
 
     if (tokenColor === 'white') {
         return [
+            // https://www.w3schools.com/css/css_attribute_selectors.asp
             document.querySelector(`[colIndex="${left}"][rowIndex="${bottom}"]`),
             document.querySelector(`[colIndex="${right}"][rowIndex="${bottom}"]`)
         ]
@@ -88,7 +89,9 @@ function highlight(nextMoves) {
 function moveToken(cuadros, token) {
     cuadros.forEach((cuadro) => {
         cuadro.addEventListener("click", () => {
-            cuadro.appendChild(token)
+            if (cuadro.innerHTML === "") {
+                cuadro.appendChild(token)
+            }
         })
     })
 }
@@ -107,6 +110,7 @@ function createToken(tokenColor, rowIndex, colIndex) {
         const nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
         removeHighlightedBoxes()
         highlight(nextMoves)
+        console.log(nextMoves)
         moveToken(nextMoves, token)
 
     })
