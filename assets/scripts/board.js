@@ -128,7 +128,18 @@ function createToken(tokenColor) {
         const rowIndex = parseInt(parentElement.getAttribute('rowindex'), 10)
         const colIndex = parseInt(parentElement.getAttribute('colindex'), 10)
 
-        const nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
+        let nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
+
+        nextMoves = nextMoves.filter((cuadro) => {
+            if (cuadro === null) {
+                return false
+            } else if (cuadro.innerHTML === "") {
+                return true
+            } else {
+                // I need to find out how to eat the oponent
+                return false
+            }
+        })
 
         removeHighlightedBoxes()
         highlight(nextMoves)
