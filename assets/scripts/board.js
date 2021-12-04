@@ -131,11 +131,11 @@ function createToken(tokenColor) {
 
         let nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
 
-        nextMoves = nextMoves.filter((cuadro) => {
+        nextMoves = nextMoves.map((cuadro) => {
             if (cuadro === null) {
-                return false
+                return null
             } else if (cuadro.innerHTML === "") {
-                return true
+                return cuadro
             } else {
                 // I need to find out how to eat the oponent
                 const nextTokenRowIndex = cuadro.getAttribute('rowindex')
@@ -146,7 +146,7 @@ function createToken(tokenColor) {
 
                 // it is my own token
                 if (tokenColor === nextMoveTokenColor) {
-                    return false
+                    return null
                 } else {
                     const [left, right] = findNextMoves(tokenColor, nextTokenRowIndex, nextTokenColIndex)
 
@@ -165,22 +165,25 @@ function createToken(tokenColor) {
                         return sameRow && sameCol
                     }
 
-                    console.log({
-                        tokenColor,
-                        nextTokenRowIndex, nextTokenColIndex,
-                        nextMoveTokenColor,
-                        opponentNextMoves
-                    })
-
                     if (isLeftToRight(rowIndex, colIndex, nextTokenRowIndex, nextTokenColIndex)) {
-                        return right.innerHTML === ""
+                        if (right.innerHTML === "") {
+                            return right
+                        } else {
+                            return null
+                        }
                     } else {
-                        return left.innerHTML === ""
+                        if (left.innerHTML === "") {
+                            return left
+                        } else {
+                            return null
+                        }
                     }
                 }
 
             }
         })
+
+        nextMoves.filter(cuadro => cuadro !== null)
 
         removeHighlightedBoxes()
         highlight(nextMoves)
