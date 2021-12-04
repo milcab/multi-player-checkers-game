@@ -17,7 +17,7 @@ const redTokens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 rows.forEach((cols, rowIndex) => {
     const rowEl = createRow()
     cols.forEach((col, colIndex) => {
-        const colEl = createCol()
+        const cuadro = createCol()
         const isEven = (rowIndex + colIndex) % 2 === 0
         const isEmptyRow = rowIndex === 3 || rowIndex === 4
 
@@ -35,13 +35,13 @@ rows.forEach((cols, rowIndex) => {
             let token = createToken(tokenColor, rowIndex, colIndex);
 
             token.classList.add(tokenColor);
-            colEl.appendChild(token)
+            cuadro.appendChild(token)
         }
 
-        colEl.setAttribute("rowIndex", rowIndex)
-        colEl.setAttribute("colIndex", colIndex)
+        cuadro.setAttribute("rowIndex", rowIndex)
+        cuadro.setAttribute("colIndex", colIndex)
 
-        rowEl.appendChild(colEl)
+        rowEl.appendChild(cuadro)
     })
 
 
@@ -51,11 +51,11 @@ rows.forEach((cols, rowIndex) => {
 function removeHighlightedBoxes() {
     // what is this doing?
     document.querySelectorAll('.highlighted')
-    // what is this doing?
-    .forEach(element => {
         // what is this doing?
-        element.classList.remove('highlighted')
-    })
+        .forEach(element => {
+            // what is this doing?
+            element.classList.remove('highlighted')
+        })
 }
 
 const sounds = {
@@ -91,17 +91,26 @@ function highlight(nextMoves) {
 }
 
 function moveToken(cuadros, token) {
+    function move(event) {
+        const cuadro = event.target;
+        if (cuadro.innerHTML === "") {
+            cuadro.appendChild(token)
+            removeHighlightedBoxes()
+
+            cuadros.forEach((cuadro) => {
+                cuadro.removeEventListener('click', move)
+            })
+        }
+    }
+
     cuadros.forEach((cuadro) => {
-        cuadro.addEventListener("click", () => {
-            if (cuadro.innerHTML === "") {
-                cuadro.appendChild(token)
-                removeHighlightedBoxes()
-            }
-        })
+        if (cuadro) {
+            cuadro.addEventListener("click", move)
+        }
     })
 }
 
-function createToken(tokenColor, rowIndex, colIndex) {
+function createToken(tokenColor) {
     const token = document.createElement('div')
     token.classList.add('token')
 
@@ -110,12 +119,19 @@ function createToken(tokenColor, rowIndex, colIndex) {
         sounds.tokenClicked.load()
         sounds.tokenClicked.play()
         // :( not sure why it does not work :(
+        // it turns out it works if you have an android :(
         window.navigator.vibrate(200)
 
+        const parentElement = token.parentElement
+
+        // https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
+        const rowIndex = parseInt(parentElement.getAttribute('rowindex'), 10)
+        const colIndex = parseInt(parentElement.getAttribute('colindex'), 10)
+
         const nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
+
         removeHighlightedBoxes()
         highlight(nextMoves)
-        console.log(nextMoves)
         moveToken(nextMoves, token)
 
     })
