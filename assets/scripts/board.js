@@ -113,6 +113,7 @@ function moveToken(cuadros, token) {
 function createToken(tokenColor) {
     const token = document.createElement('div')
     token.classList.add('token')
+    token.setAttribute('color', tokenColor);
 
     token.addEventListener("click", () => {
         sounds.tokenClicked.pause()
@@ -137,7 +138,17 @@ function createToken(tokenColor) {
                 return true
             } else {
                 // I need to find out how to eat the oponent
-                return false
+                const nextMoveToken = cuadro.childNodes[0]
+                const nextMoveTokenColor = nextMoveToken.getAttribute('color')
+
+                // it is my own token
+                if (tokenColor === nextMoveTokenColor) {
+                    return false
+                } else {
+                    // I need to figure out the opponent next moves
+                    return false
+                }
+
             }
         })
 
