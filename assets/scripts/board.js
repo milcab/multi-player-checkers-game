@@ -63,10 +63,10 @@ const sounds = {
 }
 
 function findNextMoves(tokenColor, rowIndex, colIndex) {
-    const top = rowIndex - 1
-    const right = colIndex + 1
-    const bottom = rowIndex + 1
-    const left = colIndex - 1
+    const top = parseInt(rowIndex) - 1
+    const right = parseInt(colIndex) + 1
+    const bottom = parseInt(rowIndex) + 1
+    const left = parseInt(colIndex) - 1
 
     if (tokenColor === 'white') {
         return [
@@ -126,8 +126,8 @@ function createToken(tokenColor) {
         const parentElement = token.parentElement
 
         // https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
-        const rowIndex = parseInt(parentElement.getAttribute('rowindex'), 10)
-        const colIndex = parseInt(parentElement.getAttribute('colindex'), 10)
+        const rowIndex = parentElement.getAttribute('rowindex')
+        const colIndex = parentElement.getAttribute('colindex')
 
         let nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
 
@@ -138,15 +138,45 @@ function createToken(tokenColor) {
                 return true
             } else {
                 // I need to find out how to eat the oponent
+                const nextTokenRowIndex = cuadro.getAttribute('rowindex')
+                const nextTokenColIndex = cuadro.getAttribute('colindex')
                 const nextMoveToken = cuadro.childNodes[0]
                 const nextMoveTokenColor = nextMoveToken.getAttribute('color')
+
 
                 // it is my own token
                 if (tokenColor === nextMoveTokenColor) {
                     return false
                 } else {
-                    // I need to figure out the opponent next moves
-                    return false
+                    const [left, right] = findNextMoves(tokenColor, nextTokenRowIndex, nextTokenColIndex)
+
+                    function isLeftToRight(row1, col1, row2, col2) {
+                        let sameRow;
+                        let sameCol;
+
+                        if (tokenColor === "red") {
+                            sameRow = row1 - 1 === row2
+                        } else {
+                            sameRow = row1 + 1 === row2
+                        }
+
+                        sameCol = col1 + 1 === col2
+
+                        return sameRow && sameCol
+                    }
+
+                    console.log({
+                        tokenColor,
+                        nextTokenRowIndex, nextTokenColIndex,
+                        nextMoveTokenColor,
+                        opponentNextMoves
+                    })
+
+                    if (isLeftToRight(rowIndex, colIndex, nextTokenRowIndex, nextTokenColIndex)) {
+                        return right.innerHTML === ""
+                    } else {
+                        return left.innerHTML === ""
+                    }
                 }
 
             }
