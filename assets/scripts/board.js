@@ -165,25 +165,30 @@ function createToken(tokenColor) {
                         return sameRow && sameCol
                     }
 
+                    let emptyBox = null;
+
                     if (isLeftToRight(rowIndex, colIndex, nextTokenRowIndex, nextTokenColIndex)) {
                         if (right.innerHTML === "") {
-                            return right
-                        } else {
-                            return null
+                            emptyBox = right
                         }
-                    } else {
-                        if (left.innerHTML === "") {
-                            return left
-                        } else {
-                            return null
-                        }
+                    } else if (left.innerHTML === "") {
+                        emptyBox = left
                     }
+
+                    if (emptyBox) {
+                        emptyBox.addEventListener('click', () => {
+                            nextMoveToken.remove()
+                        }, { once: true })
+                    }
+
+
+                    return emptyBox;
                 }
 
             }
         })
 
-        nextMoves.filter(cuadro => cuadro !== null)
+        nextMoves = nextMoves.filter(cuadro => cuadro !== null)
 
         removeHighlightedBoxes()
         highlight(nextMoves)
