@@ -1,0 +1,2 @@
+displayScores()
+startGame()
