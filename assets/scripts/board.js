@@ -9,52 +9,56 @@ let rows = [
     [0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
-const boardEl = document.querySelector('.board');
+const boardEl = $('.board')
 
 const whiteTokens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 const redTokens = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-rows.forEach((cols, rowIndex) => {
-    const rowEl = createRow()
-    cols.forEach((col, colIndex) => {
-        const cuadro = createCol()
+const rowElements = rows.map((cols, rowIndex) => {
+    const rowEl = $('<div>').addClass('row')
+    const colElements = cols.map((col, colIndex) => {
+        const cuadro = $('<div>').addClass('column')
         const isEven = (rowIndex + colIndex) % 2 === 0
         const isEmptyRow = rowIndex === 3 || rowIndex === 4
 
         if (isEven && !isEmptyRow) {
-            let tokenColor;
+            let tokenColor
 
             if (whiteTokens.length) {
                 whiteTokens.pop()
-                tokenColor = 'white';
+                tokenColor = 'white'
             } else if (redTokens.length) {
                 redTokens.pop()
-                tokenColor = 'red';
+                tokenColor = 'red'
             }
 
-            let token = createToken(tokenColor, rowIndex, colIndex);
+            let token = createToken(tokenColor, rowIndex, colIndex)
 
-            token.classList.add(tokenColor);
-            cuadro.appendChild(token)
+            token.addClass(tokenColor)
+            cuadro.append(token)
         }
 
-        cuadro.setAttribute("rowIndex", rowIndex)
-        cuadro.setAttribute("colIndex", colIndex)
+        cuadro.attr("rowIndex", rowIndex)
+        cuadro.attr("colIndex", colIndex)
 
-        rowEl.appendChild(cuadro)
+        return cuadro
     })
 
+    rowEl.append(colElements)
 
-    boardEl.appendChild(rowEl)
+
+    return rowEl
 })
+
+boardEl.append(rowElements)
 
 function removeHighlightedBoxes() {
     // what is this doing?
-    document.querySelectorAll('.highlighted')
+    $('.highlighted')
         // what is this doing?
-        .forEach(element => {
+        .each((index, element) => {
             // what is this doing?
-            element.classList.remove('highlighted')
+            $(element).removeClass('highlighted')
         })
 }
 
@@ -71,13 +75,13 @@ function findNextMoves(tokenColor, rowIndex, colIndex) {
     if (tokenColor === 'white') {
         return [
             // https://www.w3schools.com/css/css_attribute_selectors.asp
-            document.querySelector(`[colIndex="${left}"][rowIndex="${bottom}"]`),
-            document.querySelector(`[colIndex="${right}"][rowIndex="${bottom}"]`)
+            $(`[colIndex="${left}"][rowIndex="${bottom}"]`),
+            $(`[colIndex="${right}"][rowIndex="${bottom}"]`)
         ]
     } else {
         return [
-            document.querySelector(`[colIndex="${left}"][rowIndex="${top}"]`),
-            document.querySelector(`[colIndex="${right}"][rowIndex="${top}"]`),
+            $(`[colIndex="${left}"][rowIndex="${top}"]`),
+            $(`[colIndex="${right}"][rowIndex="${top}"]`),
         ]
     }
 }
@@ -85,23 +89,23 @@ function findNextMoves(tokenColor, rowIndex, colIndex) {
 function highlight(nextMoves) {
     nextMoves.forEach((move) => {
         if (move) {
-            move.classList.add('highlighted')
+            move.addClass('highlighted')
         }
     })
 }
 
 function moveToken(cuadros, token) {
     function move(event) {
-        const cuadro = event.target;
-        const isToken = cuadro.classList.contains('token')
+        const cuadro = $(event.target)
+        const isToken = cuadro.hasClass('token')
 
-        if (!isToken && cuadro.innerHTML === "") {
-            cuadro.appendChild(token)
+        if (!isToken && cuadro.is(":empty")) {
+            cuadro.append(token)
 
             removeHighlightedBoxes()
 
             cuadros.forEach((cuadro) => {
-                cuadro.removeEventListener('click', move)
+                cuadro.off('click', move)
             })
 
             sounds.tokenClicked.pause()
@@ -113,40 +117,40 @@ function moveToken(cuadros, token) {
 
     cuadros.forEach((cuadro) => {
         if (cuadro) {
-            cuadro.addEventListener("click", move)
+            cuadro.on("click", move)
         }
     })
 }
 
 function createToken(tokenColor) {
-    const token = document.createElement('div')
-    token.classList.add('token')
-    token.setAttribute('color', tokenColor);
+    const token = $('<div>')
+    token.addClass('token')
+    token.attr('color', tokenColor)
 
-    token.addEventListener("click", () => {
+    token.on("click", () => {
         // :( not sure why it does not work :(
         // it turns out it works if you have an android :(
         window.navigator.vibrate(200)
 
-        const parentElement = token.parentElement
+        const parentElement = token.parent()
 
         // https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
-        const rowIndex = parentElement.getAttribute('rowindex')
-        const colIndex = parentElement.getAttribute('colindex')
+        const rowIndex = parentElement.attr('rowindex')
+        const colIndex = parentElement.attr('colindex')
 
         let nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
 
         nextMoves = nextMoves.map((cuadro) => {
             if (cuadro === null) {
                 return null
-            } else if (cuadro.innerHTML === "") {
+            } else if (cuadro.is(":empty")) {
                 return cuadro
             } else {
                 // I need to find out how to eat the oponent
-                const nextTokenRowIndex = cuadro.getAttribute('rowindex')
-                const nextTokenColIndex = cuadro.getAttribute('colindex')
-                const nextMoveToken = cuadro.childNodes[0]
-                const nextMoveTokenColor = nextMoveToken.getAttribute('color')
+                const nextTokenRowIndex = cuadro.attr('rowindex')
+                const nextTokenColIndex = cuadro.attr('colindex')
+                const nextMoveToken = $(cuadro.children()[0])
+                const nextMoveTokenColor = nextMoveToken.attr('color')
 
 
                 // it is my own token
@@ -156,8 +160,8 @@ function createToken(tokenColor) {
                     const [left, right] = findNextMoves(tokenColor, nextTokenRowIndex, nextTokenColIndex)
 
                     function isLeftToRight(row1, col1, row2, col2) {
-                        let sameRow;
-                        let sameCol;
+                        let sameRow
+                        let sameCol
 
                         row1 = parseInt(row1)
                         col1 = parseInt(col1)
@@ -175,24 +179,24 @@ function createToken(tokenColor) {
                         return sameRow && sameCol
                     }
 
-                    let emptyBox = null;
+                    let emptyBox = null
 
                     if (isLeftToRight(rowIndex, colIndex, nextTokenRowIndex, nextTokenColIndex)) {
-                        if (right.innerHTML === "") {
+                        if (right.is(':empty')) {
                             emptyBox = right
                         }
-                    } else if (left.innerHTML === "") {
+                    } else if (left.is(':empty')) {
                         emptyBox = left
                     }
 
                     if (emptyBox) {
-                        emptyBox.addEventListener('click', () => {
+                        emptyBox.one('click', () => {
                             nextMoveToken.remove()
-                        }, { once: true })
+                        })
                     }
 
 
-                    return emptyBox;
+                    return emptyBox
                 }
 
             }
@@ -211,15 +215,9 @@ function createToken(tokenColor) {
 
 
 function createRow() {
-    const row = document.createElement('div')
-    row.classList.add('row')
-
-    return row
+    return $('div').addClass('row')
 }
 
 function createCol() {
-    const col = document.createElement('div')
-    col.classList.add('column')
-
-    return col
+    return $('div').addClass('column')
 }
