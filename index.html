@@ -15,12 +15,29 @@
       <nav></nav>
     </header>
     <main>
+      <center>
+        <div class="scores">
+          <div class="white"></div>
+          <div class="red"></div>
+        </div>
+      </center>
       <div class="board"></div>
     </main>
     <footer></footer>
+    <!-- audio files from https://www.epidemicsound.com/sound-effects/search/?term=score -->
     <audio
       id="tokenClicked"
       src="assets/sounds/ES_Ping Pong Paddle 1 - SFX Producer.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="applause"
+      src="assets/sounds/ES_Human Crowd Studio 7 - SFX Producer.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="scoreUpdate"
+      src="assets/sounds/ES_Foosball Table Score - SFX Producer.mp3"
       preload="auto"
     ></audio>
     <script
@@ -28,6 +45,8 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <script src="assets/scripts/sounds.js"></script>
+    <script src="assets/scripts/score.js"></script>
     <script src="assets/scripts/board.js"></script>
     <script src="assets/scripts/my-game.js"></script>
   </body>
