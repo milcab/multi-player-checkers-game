@@ -1,0 +1,54 @@
+const gameStats = {
+    totalGamesPlayed: 0,
+    players: {
+        white: {
+            gamesPlayed: 0,
+            score: 0,
+            wins: 0,
+            draws: 0,
+            losses: 0
+        },
+        red: {
+            gamesPlayed: 0,
+            score: 0,
+            wins: 0,
+            draws: 0,
+            losses: 0
+        }
+    }
+}
+
+function addScore(color) {
+    gameStats.players[color].score++
+    sounds.scoreUpdate()
+}
+
+function addDraw(color) {
+    gameStats.players[color].draws++
+    sounds.scoreUpdate()
+}
+
+function addWin(color) {
+    gameStats.players[color].wins++
+    sounds.scoreUpdate()
+}
+
+function addLosses(color) {
+    gameStats.players[color].losses++
+    sounds.scoreUpdate()
+}
+
+function displayScores() {
+    $('.scores .white').text(gameStats.players.white.score)
+    $('.scores .red').text(gameStats.players.red.score)
+
+    if (gameStats.players.white.score === 12) {
+        sounds.applause()
+        // alert('white is the winner')
+    }
+
+    if (gameStats.players.red.score === 12) {
+        sounds.applause()
+        // alert('red is the winner')
+    }
+}
