@@ -19,22 +19,22 @@ const gameStats = {
 }
 
 function addScore(color) {
-    gameStats.players[color].score++
+    gameStats.players[color].score += 1
     sounds.scoreUpdate()
 }
 
 function addDraw(color) {
-    gameStats.players[color].draws++
+    gameStats.players[color].draws += 1
     sounds.scoreUpdate()
 }
 
 function addWin(color) {
-    gameStats.players[color].wins++
+    gameStats.players[color].wins += 1
     sounds.scoreUpdate()
 }
 
 function addLosses(color) {
-    gameStats.players[color].losses++
+    gameStats.players[color].losses += 1
     sounds.scoreUpdate()
 }
 
