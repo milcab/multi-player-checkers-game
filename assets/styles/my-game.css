@@ -5,10 +5,13 @@ body {
 * {
   box-sizing: border-box;
 }
+h1 {
+  color: white;
+}
 
 .board {
   background: #f7f7e1;
-  width: 410px;
+  width: 350px;
   margin: auto;
   border: 5px solid #6a4f00;
 }
@@ -43,8 +46,8 @@ body {
   padding: 0;
   margin: 0;
 
-  width: 50px;
-  height: 50px;
+  width: 43px;
+  height: 43px;
 }
 
 .row:nth-child(odd) .column:nth-child(odd),
@@ -58,8 +61,9 @@ body {
 
 .scores {
   display: flex;
-  max-width: 410px;
+  max-width: 350px;
   margin: 1em auto;
+  column-gap: 10px;
 }
 
 .scores .white,
@@ -69,6 +73,7 @@ body {
   width: 50%;
   margin: 0;
   opacity: 50%;
+  border-radius: 5px;
 }
 
 .scores .white {
@@ -83,7 +88,7 @@ body {
 
 body[currentturn="red"] .scores .red,
 body[currentturn="white"] .scores .white {
-  border: 5px solid blue;
+  border: 10px solid yellow;
   opacity: 100%;
 }
 
