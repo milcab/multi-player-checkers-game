@@ -126,7 +126,7 @@ function startGame() {
             if ($('body').attr('currentturn') === tokenColor) {
                 // :( not sure why it does not work :(
                 // it turns out it works if you have an android :(
-                window.navigator.vibrate(200)
+                // window.navigator.vibrate(200)
 
                 const parentElement = token.parent()
 
