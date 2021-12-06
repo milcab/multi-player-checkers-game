@@ -93,8 +93,11 @@ function highlight(nextMoves) {
 function moveToken(cuadros, token) {
     function move(event) {
         const cuadro = event.target;
-        if (cuadro.innerHTML === "") {
+        const isToken = cuadro.classList.contains('token')
+
+        if (!isToken && cuadro.innerHTML === "") {
             cuadro.appendChild(token)
+
             removeHighlightedBoxes()
 
             cuadros.forEach((cuadro) => {
@@ -154,14 +157,19 @@ function createToken(tokenColor) {
                         let sameRow;
                         let sameCol;
 
+                        row1 = parseInt(row1)
+                        col1 = parseInt(col1)
+                        row2 = parseInt(row2)
+                        col2 = parseInt(col2)
+
                         if (tokenColor === "red") {
                             sameRow = row1 - 1 === row2
                         } else {
                             sameRow = row1 + 1 === row2
                         }
-
+                        console.log({ row1, row2, sameRow })
                         sameCol = col1 + 1 === col2
-
+                        console.log({ tokenColor, row1, col1, row2, col2 })
                         return sameRow && sameCol
                     }
 
