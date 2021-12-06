@@ -29,10 +29,6 @@ body {
   background-image: url("../images/token-white.png");
 }
 
-.token:hover {
-  cursor: pointer;
-}
-
 .row {
   display: flex;
 }
@@ -86,4 +82,14 @@ body {
 .scores > div.red {
   background: #e52702;
   color: white;
+}
+
+body[currentturn="red"] .scores .red,
+body[currentturn="white"] .scores .white {
+  border: 5px solid blue;
+}
+
+body[currentturn="red"] .token.red:hover,
+body[currentturn="white"] .token.white:hover {
+  cursor: pointer;
 }

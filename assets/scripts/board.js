@@ -106,7 +106,7 @@ function startGame() {
                 })
 
                 sounds.moveToken()
-
+                switchPlayer()
             }
         }
 
@@ -123,90 +123,93 @@ function startGame() {
         token.attr('color', tokenColor)
 
         token.on("click", () => {
-            // :( not sure why it does not work :(
-            // it turns out it works if you have an android :(
-            window.navigator.vibrate(200)
+            if ($('body').attr('currentturn') === tokenColor) {
+                // :( not sure why it does not work :(
+                // it turns out it works if you have an android :(
+                window.navigator.vibrate(200)
 
-            const parentElement = token.parent()
+                const parentElement = token.parent()
 
-            // https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
-            const rowIndex = parentElement.attr('rowindex')
-            const colIndex = parentElement.attr('colindex')
+                // https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
+                const rowIndex = parentElement.attr('rowindex')
+                const colIndex = parentElement.attr('colindex')
 
-            let nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
+                let nextMoves = findNextMoves(tokenColor, rowIndex, colIndex)
 
-            nextMoves = nextMoves.map((cuadro) => {
-                if (cuadro === null) {
-                    return null
-                } else if (cuadro.is(":empty")) {
-                    return cuadro
-                } else {
-                    // I need to find out how to eat the oponent
-                    const nextTokenRowIndex = cuadro.attr('rowindex')
-                    const nextTokenColIndex = cuadro.attr('colindex')
-                    const nextMoveToken = $(cuadro.children()[0])
-                    const nextMoveTokenColor = nextMoveToken.attr('color')
-
-
-                    // it is my own token
-                    if (tokenColor === nextMoveTokenColor) {
+                nextMoves = nextMoves.map((cuadro) => {
+                    if (cuadro === null) {
                         return null
+                    } else if (cuadro.is(":empty")) {
+                        return cuadro
                     } else {
-                        const [left, right] = findNextMoves(tokenColor, nextTokenRowIndex, nextTokenColIndex)
+                        // I need to find out how to eat the oponent
+                        const nextTokenRowIndex = cuadro.attr('rowindex')
+                        const nextTokenColIndex = cuadro.attr('colindex')
+                        const nextMoveToken = $(cuadro.children()[0])
+                        const nextMoveTokenColor = nextMoveToken.attr('color')
 
-                        function isLeftToRight(row1, col1, row2, col2) {
-                            let sameRow
-                            let sameCol
 
-                            row1 = parseInt(row1)
-                            col1 = parseInt(col1)
-                            row2 = parseInt(row2)
-                            col2 = parseInt(col2)
+                        // it is my own token
+                        if (tokenColor === nextMoveTokenColor) {
+                            return null
+                        } else {
+                            const [left, right] = findNextMoves(tokenColor, nextTokenRowIndex, nextTokenColIndex)
 
-                            if (tokenColor === "red") {
-                                sameRow = row1 - 1 === row2
-                            } else {
-                                sameRow = row1 + 1 === row2
+                            function isLeftToRight(row1, col1, row2, col2) {
+                                let sameRow
+                                let sameCol
+
+                                row1 = parseInt(row1)
+                                col1 = parseInt(col1)
+                                row2 = parseInt(row2)
+                                col2 = parseInt(col2)
+
+                                if (tokenColor === "red") {
+                                    sameRow = row1 - 1 === row2
+                                } else {
+                                    sameRow = row1 + 1 === row2
+                                }
+                                console.log({ row1, row2, sameRow })
+                                sameCol = col1 + 1 === col2
+                                console.log({ tokenColor, row1, col1, row2, col2 })
+                                return sameRow && sameCol
                             }
-                            console.log({ row1, row2, sameRow })
-                            sameCol = col1 + 1 === col2
-                            console.log({ tokenColor, row1, col1, row2, col2 })
-                            return sameRow && sameCol
-                        }
 
-                        let emptyBox = null
+                            let emptyBox = null
 
-                        if (isLeftToRight(rowIndex, colIndex, nextTokenRowIndex, nextTokenColIndex)) {
-                            if (right.is(':empty')) {
-                                emptyBox = right
+                            if (isLeftToRight(rowIndex, colIndex, nextTokenRowIndex, nextTokenColIndex)) {
+                                if (right.is(':empty')) {
+                                    emptyBox = right
+                                }
+                            } else if (left.is(':empty')) {
+                                emptyBox = left
                             }
-                        } else if (left.is(':empty')) {
-                            emptyBox = left
+
+                            if (emptyBox) {
+                                emptyBox.one('click', () => {
+                                    nextMoveToken.remove()
+                                    addScore(tokenColor)
+                                    displayScores()
+                                })
+                            }
+
+
+                            return emptyBox
                         }
 
-                        if (emptyBox) {
-                            emptyBox.one('click', () => {
-                                nextMoveToken.remove()
-                                addScore(tokenColor)
-                                displayScores()
-                            })
-                        }
-
-
-                        return emptyBox
                     }
+                })
 
-                }
-            })
+                nextMoves = nextMoves.filter(cuadro => cuadro !== null)
 
-            nextMoves = nextMoves.filter(cuadro => cuadro !== null)
+                removeHighlightedBoxes()
+                highlight(nextMoves)
+                moveToken(nextMoves, token)
 
-            removeHighlightedBoxes()
-            highlight(nextMoves)
-            moveToken(nextMoves, token)
-
+            }
         })
 
         return token
     }
+
 }
