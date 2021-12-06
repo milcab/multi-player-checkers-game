@@ -42,13 +42,17 @@ function displayScores() {
     $('.scores .white').text(gameStats.players.white.score)
     $('.scores .red').text(gameStats.players.red.score)
 
-    if (gameStats.players.white.score === 12) {
-        sounds.applause()
-        // alert('white is the winner')
-    }
+    const winner = $('#winner');
 
     if (gameStats.players.red.score === 12) {
         sounds.applause()
-        // alert('red is the winner')
+        winner.addClass('rotate-scale-up')
+        winner.text('red is the winner')
+    }
+
+    if (gameStats.players.white.score === 12) {
+        sounds.applause()
+        winner.addClass('rotate-scale-up')
+        winner.text('white is the winner')
     }
 }
