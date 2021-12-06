@@ -59,3 +59,31 @@ body {
 .column.highlighted {
   background: yellow !important;
 }
+
+.scores {
+  display: flex;
+  max-width: 410px;
+  margin: 1em auto;
+}
+
+.scores > div {
+  color: white;
+  font-size: 3em;
+  padding: 1em;
+  width: 50%;
+}
+
+.scores > div.white {
+  background: white;
+  color: black;
+}
+
+.scores > div.white {
+  background: white;
+  color: black;
+}
+
+.scores > div.red {
+  background: #e52702;
+  color: white;
+}
