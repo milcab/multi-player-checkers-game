@@ -102,7 +102,7 @@ function startGame() {
                 removeHighlightedBoxes()
 
                 cuadros.forEach((cuadro) => {
-                    cuadro.off('click touchstart', move)
+                    cuadro.off('click', move)
                 })
 
                 sounds.moveToken()
@@ -112,7 +112,7 @@ function startGame() {
 
         cuadros.forEach((cuadro) => {
             if (cuadro) {
-                cuadro.on("click touchstart", move)
+                cuadro.on("click", move)
             }
         })
     }
@@ -122,7 +122,7 @@ function startGame() {
         token.addClass('token')
         token.attr('color', tokenColor)
 
-        token.on("click touchstart", () => {
+        token.on("click", () => {
             if ($('body').attr('currentturn') === tokenColor) {
                 // :( not sure why it does not work :(
                 // it turns out it works if you have an android :(
@@ -186,7 +186,7 @@ function startGame() {
                             }
 
                             if (emptyBox) {
-                                emptyBox.one('click touchstart', () => {
+                                emptyBox.one('click', () => {
                                     nextMoveToken.remove()
                                     addScore(tokenColor)
                                     displayScores()
