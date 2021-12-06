@@ -103,6 +103,11 @@ function moveToken(cuadros, token) {
             cuadros.forEach((cuadro) => {
                 cuadro.removeEventListener('click', move)
             })
+
+            sounds.tokenClicked.pause()
+            sounds.tokenClicked.load()
+            sounds.tokenClicked.play()
+
         }
     }
 
@@ -119,9 +124,6 @@ function createToken(tokenColor) {
     token.setAttribute('color', tokenColor);
 
     token.addEventListener("click", () => {
-        sounds.tokenClicked.pause()
-        sounds.tokenClicked.load()
-        sounds.tokenClicked.play()
         // :( not sure why it does not work :(
         // it turns out it works if you have an android :(
         window.navigator.vibrate(200)
